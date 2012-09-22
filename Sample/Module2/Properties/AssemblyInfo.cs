@@ -6,12 +6,12 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Caliburn.Micro.WP71.Recipes.ExternalModules")]
+[assembly: AssemblyTitle("Module2")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Caliburn.Micro.WP71.Recipes.ExternalModules")]
-[assembly: AssemblyCopyright("Copyright © Mikael Koskinen 2011")]
+[assembly: AssemblyProduct("Module2")]
+[assembly: AssemblyCopyright("Copyright ©  2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +21,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("41f6a9b8-2fa3-42cd-9311-ac1c8a53a843")]
+[assembly: Guid("60a92a6f-64d8-41cd-818b-a8439df5a2cc")]
 
 // Version information for an assembly consists of the following four values:
 //
