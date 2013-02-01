@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 //namespace Caliburn.Micro
 //{
@@ -44,8 +47,44 @@ namespace Caliburn.Micro.WP71.Recipes.ExternalModules
 
         public virtual void Initialize()
         {
-            ConfigureContainer(Container as PhoneContainer);
+            var phoneContainer = Container as PhoneContainer;
+            ConfigureStorageMechanismsAndWorkers(phoneContainer);
+            ConfigureContainer(phoneContainer);
         }
+
+        /// <summary>
+        /// Identify, load and configure all instances of <see cref="IStorageMechanism"/>
+        /// and <see cref="IStorageHandler"/> that are defined in the assembly associated
+        /// with this bootstrapper.
+        /// </summary>
+        /// <param name="phoneContainer">The currently configured 
+        /// <see cref="PhoneContainer"/>.</param>
+        /// <remarks>Caliburn Micro will automatically load storage handlers and storage 
+        /// mechanisms from the assemblies configured in <see cref="AssemblySource.Instance"/> 
+        /// when <see cref="PhoneContainer.RegisterPhoneServices"/> is first invoked.
+        /// Since the purpose of this recipe is to allow the delayed loading
+        /// of assemblies it makes sense to locate the storage handlers alongside the
+        /// view models in the same assembly. 
+        /// </remarks>
+        private void ConfigureStorageMechanismsAndWorkers(PhoneContainer phoneContainer)
+        {
+            if (phoneContainer == null) return;
+
+            var coordinator = (StorageCoordinator)(phoneContainer.GetInstance(typeof(StorageCoordinator), null));
+            var assembly = GetType().Assembly;
+
+            phoneContainer.AllTypesOf<IStorageMechanism>(assembly);
+            phoneContainer.AllTypesOf<IStorageHandler>(assembly);
+
+            phoneContainer.GetAllInstances(typeof(IStorageMechanism)).
+                            Where(m => ReferenceEquals(m.GetType().Assembly, assembly)).
+                            Apply(m => coordinator.AddStorageMechanism((IStorageMechanism)m));
+
+            phoneContainer.GetAllInstances(typeof(IStorageHandler)).
+                            Where(h => ReferenceEquals(h.GetType().Assembly, assembly)).
+                            Apply(h => coordinator.AddStorageHandler((IStorageHandler)h));
+        }
+
 
         //protected virtual void RegisterViewModelsWithLocator(Assembly assembly)
         //{
